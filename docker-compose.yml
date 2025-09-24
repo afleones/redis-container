@@ -1,0 +1,21 @@
+services:
+  redis:
+    image: redis:7-alpine
+    hostname: redis
+    restart: unless-stopped
+    command: ["redis-server", "--requirepass", "${APP_REDIS_PASSWORD}", "--appendonly", "yes"]
+    environment:
+      - APP_REDIS_PASSWORD=${APP_REDIS_PASSWORD}
+    volumes:
+      - redis-data:/data
+    ports:
+      - 6379:6379
+    networks:
+      - mi-gestor-net
+
+volumes:
+  redis-data: {}
+
+networks:
+  mi-gestor-net:
+    external: true
